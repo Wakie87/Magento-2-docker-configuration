@@ -390,8 +390,8 @@ services:
               {
                 "http-basic": {
                   "repo.magento.com": {
-                    "username": "${COMPOSER_USER:-}",
-                    "password": "${COMPOSER_PASSWORD:-}"
+                    "username": "${COMPOSER_USER:-c745c9e53934ec9f727a99ae6c487277}",
+                    "password": "${COMPOSER_PASSWORD:-137b0169b389c191fd3a63544bee6e4d}"
                   }
                 }
               }
