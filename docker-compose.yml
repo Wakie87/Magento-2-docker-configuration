@@ -314,7 +314,7 @@ services:
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
               ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
-        image: ${BRAND:-fitchs}-php
+        image: fitchs-php
         container_name: php
         environment: *php_env
         hostname: php

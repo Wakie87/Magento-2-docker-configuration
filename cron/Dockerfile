@@ -1,6 +1,5 @@
 # syntax = docker/dockerfile:labs
-ARG BRAND
-FROM ${BRAND}-php
+FROM fitchs-php
 
 LABEL author="admin@magenx.com"
 LABEL source="https://github.com/magenx/Magento-2-docker-configuration"
