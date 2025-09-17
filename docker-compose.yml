@@ -314,6 +314,7 @@ services:
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
               ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
+        image: ${BRAND:-fitchs}-php
         container_name: php
         environment: *php_env
         hostname: php
@@ -477,6 +478,8 @@ services:
         depends_on:
             mariadb:
                 condition: service_healthy
+            php:
+                condition: service_started
         volumes:
             - magento:${ROOT_PATH:-/home/fitchs}:ro
             - media:${ROOT_PATH:-/home/fitchs}/shared/pub/media:ro
