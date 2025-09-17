@@ -51,7 +51,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#
     mariadb:
         image: mariadb:${MARIADB_VERSION:-11.7}
-        container_name: mariadb
+        container_name: ${COOLIFY_CONTAINER_NAME:-mariadb}
         hostname: mariadb
         environment:
             MARIADB_AUTO_UPGRADE: ${MARIADB_AUTO_UPGRADE:-yes}
@@ -124,7 +124,7 @@ services:
             context: ./opensearch
             args:
               OPENSEARCH_VERSION: ${OPENSEARCH_VERSION:-2.19.0}
-        container_name: opensearch
+        container_name: ${COOLIFY_CONTAINER_NAME:-opensearch}
         hostname: opensearch
         environment:
             cluster.name: ${BRAND:-fitchs}-cluster
@@ -164,7 +164,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#
     redis-cache:
         image: &redis_image redis:${REDIS_VERSION:-8.0}-alpine
-        container_name: redis-cache
+        container_name: ${COOLIFY_CONTAINER_NAME:-redis-cache}
         hostname: redis-cache
         command: >
             --bind redis-cache
@@ -194,7 +194,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#
     redis-session:
         image: *redis_image
-        container_name: redis-session
+        container_name: ${COOLIFY_CONTAINER_NAME:-redis-session}
         hostname: redis-session
         command: >
             --bind redis-session
@@ -225,7 +225,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#                
     rabbitmq:
         image: rabbitmq:${RABBITMQ_VERSION:-4.1}-alpine
-        container_name: rabbitmq
+        container_name: ${COOLIFY_CONTAINER_NAME:-rabbitmq}
         hostname: rabbitmq
         environment:
             RABBITMQ_DEFAULT_USER: ${BRAND:-fitchs}
@@ -252,7 +252,7 @@ services:
               VARNISH_VERSION: ${VARNISH_VERSION:-7.6}
               VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE:-1G}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
-        container_name: varnish
+        container_name: ${COOLIFY_CONTAINER_NAME:-varnish}
         hostname: varnish
         restart: always
         depends_on:
@@ -272,7 +272,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#  
     magento:
         image: alpine:${ALPINE_VERSION:-3.22}
-        container_name: magento
+        container_name: ${COOLIFY_CONTAINER_NAME:-magento}
         environment: &php_env
             MARIADB_DATABASE: ${MARIADB_DATABASE:-fitchs_magento2}
             MARIADB_USER: ${MARIADB_USER:-fitchs}
@@ -315,7 +315,7 @@ services:
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
               ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
         image: fitchs-php
-        container_name: php
+        container_name: ${COOLIFY_CONTAINER_NAME:-php}
         environment: *php_env
         hostname: php
         restart: always
@@ -352,8 +352,8 @@ services:
               PHP_VERSION: ${PHP_VERSION:-84}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
-              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
-        container_name: nginx
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
+        container_name: ${COOLIFY_CONTAINER_NAME:-nginx}
         hostname: nginx
         restart: always
         depends_on:
@@ -385,7 +385,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------# 
     composer:
         image: composer:${COMPOSER_VERSION:-2.8}
-        container_name: composer
+        container_name: ${COOLIFY_CONTAINER_NAME:-composer}
         environment:
             COMPOSER_AUTH: |
               {
@@ -414,7 +414,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#  
     phpmyadmin:
         image: phpmyadmin:fpm-alpine
-        container_name: phpmyadmin
+        container_name: ${COOLIFY_CONTAINER_NAME:-phpmyadmin}
         hostname: phpmyadmin
         environment:
             PMA_ARBITRARY: ${PMA_ARBITRARY:-1}
@@ -449,7 +449,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------#           
     certbot:
         image: certbot/certbot:latest
-        container_name: certbot
+        container_name: ${COOLIFY_CONTAINER_NAME:-certbot}
         volumes:
             - magento:${ROOT_PATH:-/home/fitchs}/current/pub/.well-known/acme-challenge/:rw
             - certbot:/etc/letsencrypt
@@ -465,15 +465,9 @@ services:
             context: ./cron
             args:
               BRAND: ${BRAND:-fitchs}
-              DOMAIN: ${DOMAIN:-fitchs.au}
               PHP_USER: ${PHP_USER:-php-fitchs}
-              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
               ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
-              PHP_VERSION: ${PHP_VERSION:-84}
-              TIMEZONE: ${TIMEZONE:-Australia/Perth}
-              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
-              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
-        container_name: cron
+        container_name: ${COOLIFY_CONTAINER_NAME:-cron}
         environment: *php_env
         depends_on:
             mariadb:
