@@ -462,7 +462,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------# 
     cron:
         build:
-            context: ./cron
+            context: ./php
             args:
               BRAND: ${BRAND:-fitchs}
               PHP_USER: ${PHP_USER:-php-fitchs}
