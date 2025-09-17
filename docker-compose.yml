@@ -271,18 +271,7 @@ services:
 #  Magento application code
 # # ---------------------------------------------------------------------------------------------------------------------#  
     magento:
-        build:
-            context: ./magento
-            args: &magento_env
-              BRAND: ${BRAND:-fitchs}
-              DOMAIN: ${DOMAIN:-fitchs.au}
-              PHP_USER: ${PHP_USER:-php-fitchs}
-              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
-              ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
-              PHP_VERSION: ${PHP_VERSION:-84}
-              TIMEZONE: ${TIMEZONE:-Australia/Perth}
-              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
-              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
+        image: alpine:${ALPINE_VERSION:-3.22}
         container_name: magento
         environment: &php_env
             MARIADB_DATABASE: ${MARIADB_DATABASE:-fitchs_magento2}
@@ -315,7 +304,15 @@ services:
         build:
             context: ./php
             args:
-              <<: *magento_env
+              BRAND: ${BRAND:-fitchs}
+              DOMAIN: ${DOMAIN:-fitchs.au}
+              PHP_USER: ${PHP_USER:-php-fitchs}
+              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
+              ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
+              PHP_VERSION: ${PHP_VERSION:-84}
+              TIMEZONE: ${TIMEZONE:-Australia/Perth}
+              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
               ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
         container_name: php
         environment: *php_env
@@ -345,7 +342,16 @@ services:
     nginx:
         build:
             context: ./nginx
-            args: *magento_env
+            args:
+              BRAND: ${BRAND:-fitchs}
+              DOMAIN: ${DOMAIN:-fitchs.au}
+              PHP_USER: ${PHP_USER:-php-fitchs}
+              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
+              ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
+              PHP_VERSION: ${PHP_VERSION:-84}
+              TIMEZONE: ${TIMEZONE:-Australia/Perth}
+              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
         container_name: nginx
         hostname: nginx
         restart: always
@@ -377,10 +383,7 @@ services:
 #   Composer is a dependency manager written in and for PHP
 # # ---------------------------------------------------------------------------------------------------------------------# 
     composer:
-        build:
-            context: ./composer
-            args:
-              <<: *magento_env
+        image: composer:${COMPOSER_VERSION:-2.8}
         container_name: composer
         environment:
             COMPOSER_AUTH: |
@@ -459,7 +462,16 @@ services:
     cron:
         build:
             context: ./cron
-            args: *magento_env
+            args:
+              BRAND: ${BRAND:-fitchs}
+              DOMAIN: ${DOMAIN:-fitchs.au}
+              PHP_USER: ${PHP_USER:-php-fitchs}
+              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
+              ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
+              PHP_VERSION: ${PHP_VERSION:-84}
+              TIMEZONE: ${TIMEZONE:-Australia/Perth}
+              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
         container_name: cron
         environment: *php_env
         depends_on:
