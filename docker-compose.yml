@@ -478,8 +478,6 @@ services:
         depends_on:
             mariadb:
                 condition: service_healthy
-            php:
-                condition: service_started
         volumes:
             - magento:${ROOT_PATH:-/home/fitchs}:ro
             - media:${ROOT_PATH:-/home/fitchs}/shared/pub/media:ro
