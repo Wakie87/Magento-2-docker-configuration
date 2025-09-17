@@ -281,7 +281,7 @@ services:
             INDEXER_PASSWORD: ${SERVICE_PASSWORD_INDEXER}
             DOMAIN: ${DOMAIN:-fitchs.au}
             ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
-            CRYPT_KEY: ${CRYPT_KEY:-8106584c87cc44acc5adc748299ceeb0}
+            CRYPT_KEY: ${CRYPT_KEY:-810658.4c87cc44acc5adc748299ceeb0}
             RABBITMQ_PASSWORD: ${SERVICE_PASSWORD_RABBITMQ}
             BRAND: ${BRAND:-fitchs}
         volumes:
@@ -309,7 +309,7 @@ services:
               PHP_USER: ${PHP_USER:-php-fitchs}
               ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
               ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
-              PHP_VERSION: ${PHP_VERSION:-84}
+              PHP_VERSION: ${PHP_VERSION:-8.4}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
@@ -330,7 +330,7 @@ services:
             - var:${ROOT_PATH:-/home/fitchs}/shared/var:rw
         user: ${PHP_USER:-php-fitchs}
         working_dir: "${ROOT_PATH:-/home/fitchs}/current"
-        entrypoint: ["php-fpm${PHP_VERSION:-84}", "-F"]
+        entrypoint: ["php-fpm${PHP_VERSION:-8.4}", "-F"]
         cpu_shares: 1024
         mem_limit: 2048m
         mem_reservation: 512m
@@ -349,7 +349,7 @@ services:
               PHP_USER: ${PHP_USER:-php-fitchs}
               ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
               ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
-              PHP_VERSION: ${PHP_VERSION:-84}
+              PHP_VERSION: ${PHP_VERSION:-8.4}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
@@ -469,7 +469,7 @@ services:
               PHP_USER: ${PHP_USER:-php-fitchs}
               ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
               ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
-              PHP_VERSION: ${PHP_VERSION:-84}
+              PHP_VERSION: ${PHP_VERSION:-8.4}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
               MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
