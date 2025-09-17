@@ -273,6 +273,12 @@ services:
     magento:
         image: alpine:${ALPINE_VERSION:-3.22}
         container_name: ${COOLIFY_CONTAINER_NAME:-magento}
+        command: |
+          sh -c '
+            addgroup -g 1000 ${BRAND:-fitchs} 2>/dev/null || true
+            adduser -u 1000 -G ${BRAND:-fitchs} -s /bin/sh -D ${BRAND:-fitchs} 2>/dev/null || true
+            exec sleep infinity
+          '
         environment: &php_env
             MARIADB_DATABASE: ${MARIADB_DATABASE:-fitchs_magento2}
             MARIADB_USER: ${MARIADB_USER:-fitchs}
@@ -290,7 +296,6 @@ services:
             - var:${ROOT_PATH:-/home/fitchs}/shared/var
         user: "${BRAND:-fitchs}"
         working_dir: "${ROOT_PATH:-/home/fitchs}/current"
-        entrypoint: ["/entrypoint.sh"]
         cpu_shares: 614
         mem_limit: 512m
         mem_reservation: 128m
@@ -485,9 +490,10 @@ services:
             - magento:${ROOT_PATH:-/home/fitchs}:ro
             - media:${ROOT_PATH:-/home/fitchs}/shared/pub/media:ro
             - var:${ROOT_PATH:-/home/fitchs}/shared/var:rw
+            - ./cron/setup-cron.sh:/setup-cron.sh:ro
         user: ${PHP_USER:-php-fitchs}
         working_dir: "${ROOT_PATH:-/home/fitchs}/current/"
-        command: ["crond", "-f"]
+        command: ["sh", "/setup-cron.sh"]
         cpu_shares: 1024
         mem_limit: 2048m
         mem_reservation: 512m
