@@ -312,7 +312,7 @@ services:
               PHP_VERSION: ${PHP_VERSION:-84}
               TIMEZONE: ${TIMEZONE:-Australia/Perth}
               MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
-              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-develop}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
               ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
         image: fitchs-php
         container_name: ${COOLIFY_CONTAINER_NAME:-php}
@@ -465,8 +465,15 @@ services:
             context: ./php
             args:
               BRAND: ${BRAND:-fitchs}
+              DOMAIN: ${DOMAIN:-fitchs.au}
               PHP_USER: ${PHP_USER:-php-fitchs}
+              ADMIN_PATH: ${ADMIN_PATH:-admin_4ddywu1}
               ROOT_PATH: ${ROOT_PATH:-/home/fitchs}
+              PHP_VERSION: ${PHP_VERSION:-84}
+              TIMEZONE: ${TIMEZONE:-Australia/Perth}
+              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO:-magento/magento2}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH:-2.4-8}
+              ALPINE_VERSION: ${ALPINE_VERSION:-3.22}
         container_name: ${COOLIFY_CONTAINER_NAME:-cron}
         environment: *php_env
         depends_on:
