@@ -13,7 +13,7 @@ ARG DOMAIN
 ARG ROOT_PATH
 ARG ADMIN_PATH
 ARG MAGENTO_ROOT_PATH
-ARG TZ
+ARG TIMEZONE
 
 ARG PROFILER_PLACEHOLDER
 ARG PHPMYADMIN_FOLDER
@@ -73,4 +73,4 @@ RUN <<EOF
     chown -R ${BRAND} /var/cache/nginx /var/run /var/log/nginx
 EOF
 
-RUN ln -snf /usr/share/zoneinfo/${TZ} /etc/localtime && echo ${TZ} > /etc/timezone
+RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone
