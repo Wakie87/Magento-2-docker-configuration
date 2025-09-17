@@ -54,13 +54,13 @@ services:
         container_name: mariadb
         hostname: mariadb
         environment:
-            - MARIADB_AUTO_UPGRADE
-            - MARIADB_DISABLE_UPGRADE_BACKUP
-            - MARIADB_RANDOM_ROOT_PASSWORD
-            - MARIADB_DATABASE
-            - MARIADB_USER
-            - MARIADB_PASSWORD
-            - TIMEZONE
+            MARIADB_AUTO_UPGRADE: ${MARIADB_AUTO_UPGRADE}
+            MARIADB_DISABLE_UPGRADE_BACKUP: ${MARIADB_DISABLE_UPGRADE_BACKUP}
+            MARIADB_RANDOM_ROOT_PASSWORD: ${MARIADB_RANDOM_ROOT_PASSWORD}
+            MARIADB_DATABASE: ${MARIADB_DATABASE}
+            MARIADB_USER: ${MARIADB_USER}
+            MARIADB_PASSWORD: ${SERVICE_PASSWORD_MARIADB}
+            TIMEZONE: ${TIMEZONE}
         command: >
             --key_buffer_size=16M
             --myisam-recover-options=FORCE,BACKUP
@@ -123,23 +123,23 @@ services:
         build:
             context: ./opensearch
             args:
-              OPENSEARCH_VERSION:
+              OPENSEARCH_VERSION: ${OPENSEARCH_VERSION}
         container_name: opensearch
         hostname: opensearch
         environment:
-            - cluster.name=${BRAND}-cluster
-            - node.name=${BRAND}-node1
-            - node.attr.rack=${BRAND}-rack1
-            - discovery.type=single-node
-            - cluster.routing.allocation.enable=all
-            - index.number_of_replicas=0
-            - bootstrap.memory_lock=true
-            - plugins.security.ssl.transport.enforce_hostname_verification=false
-            - plugins.security.ssl.http.enabled=false
-            - plugins.security.allow_unsafe_democertificates=true
-            - plugins.security.allow_default_init_securityindex=true
-            - OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m
-            - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_PASSWORD}
+            cluster.name: ${BRAND}-cluster
+            node.name: ${BRAND}-node1
+            node.attr.rack: ${BRAND}-rack1
+            discovery.type: single-node
+            cluster.routing.allocation.enable: all
+            index.number_of_replicas: 0
+            bootstrap.memory_lock: true
+            plugins.security.ssl.transport.enforce_hostname_verification: false
+            plugins.security.ssl.http.enabled: false
+            plugins.security.allow_unsafe_democertificates: true
+            plugins.security.allow_default_init_securityindex: true
+            OPENSEARCH_JAVA_OPTS: -Xms512m -Xmx512m
+            OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${SERVICE_PASSWORD_OPENSEARCH}
         ports:
             - "127.0.0.1:9200:9200"
             - "127.0.0.1:9300:9300"
@@ -151,7 +151,7 @@ services:
         mem_reservation: 512m
         oom_kill_disable: true
         healthcheck:
-            test: ["CMD-SHELL", "curl -XGET -u admin:${OPENSEARCH_PASSWORD} 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=15s' || exit 1"]
+            test: ["CMD-SHELL", "curl -XGET -u admin:${SERVICE_PASSWORD_OPENSEARCH} 'http://localhost:9200/_cluster/health?wait_for_status=yellow&timeout=15s' || exit 1"]
             start_period: 15s
             interval: 15s
             timeout: 5s
@@ -171,7 +171,7 @@ services:
             --port 6380
             --save ""
             --loglevel warning
-            --requirepass ${REDIS_PASSWORD}
+            --requirepass ${SERVICE_PASSWORD_REDIS}
             --maxmemory ${REDIS_CACHE_MEMORY}
             --maxmemory-policy allkeys-lru
             --lazyfree-lazy-eviction yes
@@ -200,7 +200,7 @@ services:
             --bind redis-session
             --port 6379
             --save 300 15
-            --requirepass ${REDIS_PASSWORD}
+            --requirepass ${SERVICE_PASSWORD_REDIS}
             --maxmemory ${REDIS_SESSION_MEMORY}
             --maxmemory-policy allkeys-lru
             --lazyfree-lazy-eviction yes
@@ -228,8 +228,8 @@ services:
         container_name: rabbitmq
         hostname: rabbitmq
         environment:
-            - RABBITMQ_DEFAULT_USER=${BRAND}
-            - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+            RABBITMQ_DEFAULT_USER: ${BRAND}
+            RABBITMQ_DEFAULT_PASS: ${SERVICE_PASSWORD_RABBITMQ}
         restart: always
         ports:
             - "127.0.0.1:5672:5672"
@@ -249,9 +249,9 @@ services:
         build:
             context: ./varnish
             args:
-              VARNISH_VERSION:
-              VARNISH_CACHE_SIZE:
-              TIMEZONE:
+              VARNISH_VERSION: ${VARNISH_VERSION}
+              VARNISH_CACHE_SIZE: ${VARNISH_CACHE_SIZE}
+              TIMEZONE: ${TIMEZONE}
         container_name: varnish
         hostname: varnish
         restart: always
@@ -274,27 +274,27 @@ services:
         build:
             context: ./magento
             args: &magento_env
-              BRAND:
-              DOMAIN:
-              PHP_USER:
-              ADMIN_PATH:
-              ROOT_PATH:
-              PHP_VERSION:
-              TIMEZONE:
-              MAGENTO_GITHUB_REPO:
-              MAGENTO_GITHUB_BRANCH:
+              BRAND: ${BRAND}
+              DOMAIN: ${DOMAIN}
+              PHP_USER: ${PHP_USER}
+              ADMIN_PATH: ${ADMIN_PATH}
+              ROOT_PATH: ${ROOT_PATH}
+              PHP_VERSION: ${PHP_VERSION}
+              TIMEZONE: ${TIMEZONE}
+              MAGENTO_GITHUB_REPO: ${MAGENTO_GITHUB_REPO}
+              MAGENTO_GITHUB_BRANCH: ${MAGENTO_GITHUB_BRANCH}
         container_name: magento
         environment: &php_env
-            - MARIADB_DATABASE
-            - MARIADB_USER
-            - MARIADB_PASSWORD
-            - REDIS_PASSWORD
-            - INDEXER_PASSWORD
-            - DOMAIN
-            - ADMIN_PATH
-            - CRYPT_KEY
-            - RABBITMQ_PASSWORD
-            - BRAND
+            MARIADB_DATABASE: ${MARIADB_DATABASE}
+            MARIADB_USER: ${MARIADB_USER}
+            MARIADB_PASSWORD: ${SERVICE_PASSWORD_MARIADB}
+            REDIS_PASSWORD: ${SERVICE_PASSWORD_REDIS}
+            INDEXER_PASSWORD: ${SERVICE_PASSWORD_INDEXER}
+            DOMAIN: ${DOMAIN}
+            ADMIN_PATH: ${ADMIN_PATH}
+            CRYPT_KEY: ${CRYPT_KEY}
+            RABBITMQ_PASSWORD: ${SERVICE_PASSWORD_RABBITMQ}
+            BRAND: ${BRAND}
         volumes:
             - magento:${ROOT_PATH}
             - media:${ROOT_PATH}/shared/pub/media
@@ -316,7 +316,7 @@ services:
             context: ./php
             args:
               <<: *magento_env
-              ALPINE_VERSION:
+              ALPINE_VERSION: ${ALPINE_VERSION}
         container_name: php
         environment: *php_env
         hostname: php
@@ -413,17 +413,17 @@ services:
         container_name: phpmyadmin
         hostname: phpmyadmin
         environment:
-            - PMA_ARBITRARY
-            - HIDE_PHP_VERSION
-            - PMA_HOST
-            - PMA_PORT
-            - MAX_EXECUTION_TIME
-            - MEMORY_LIMIT
-            - UPLOAD_LIMIT
-            - PMA_PMADB
-            - PMA_CONTROLUSER
-            - PMA_CONTROLPASS
-            - TIMEZONE
+            PMA_ARBITRARY: ${PMA_ARBITRARY}
+            HIDE_PHP_VERSION: ${HIDE_PHP_VERSION}
+            PMA_HOST: ${PMA_HOST}
+            PMA_PORT: ${PMA_PORT}
+            MAX_EXECUTION_TIME: ${MAX_EXECUTION_TIME}
+            MEMORY_LIMIT: ${MEMORY_LIMIT}
+            UPLOAD_LIMIT: ${UPLOAD_LIMIT}
+            PMA_PMADB: ${PMA_PMADB}
+            PMA_CONTROLUSER: ${PMA_CONTROLUSER}
+            PMA_CONTROLPASS: ${SERVICE_PASSWORD_MARIADB}
+            TIMEZONE: ${TIMEZONE}
         restart: always
         depends_on:
             mariadb:
