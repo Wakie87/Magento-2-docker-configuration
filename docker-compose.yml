@@ -467,7 +467,7 @@ services:
 # # ---------------------------------------------------------------------------------------------------------------------# 
     cron:
         build:
-            context: ./php
+            context: ./cron
             args:
               BRAND: ${BRAND:-fitchs}
               DOMAIN: ${DOMAIN:-fitchs.au}
