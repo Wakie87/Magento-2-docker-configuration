@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:labs
 ARG ALPINE_VERSION
-FROM alpine:${ALPINE_VERSION}
+FROM alpine:${ALPINE_VERSION} AS fitchs-php
 
 LABEL author="admin@magenx.com"
 LABEL source="https://github.com/magenx/Magento-2-docker-configuration"
